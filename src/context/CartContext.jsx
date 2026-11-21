@@ -3,6 +3,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useRef,
 } from "react";
 import api from "../services/api";
 import { useAuth } from "./AuthContext";
@@ -12,6 +13,18 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const { user } = useAuth();
   const [cart, setCart] = useState([]);
+  const cartRef = useRef([]);
+  const quantityQueueRef = useRef(new Map());
+  const pendingQuantityRef = useRef(new Map());
+
+  const updateCart = (updater) => {
+    setCart((previous) => {
+      const next =
+        typeof updater === "function" ? updater(previous) : updater;
+      cartRef.current = next;
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!user) {
@@ -28,7 +41,7 @@ export const CartProvider = ({ children }) => {
         params: { userId: user.id },
       });
 
-      setCart(data);
+      updateCart(data);
     } catch (error) {
       console.error("Cart loading failed", error);
     }
@@ -50,7 +63,7 @@ export const CartProvider = ({ children }) => {
         quantity: existing.quantity + 1,
       });
 
-      setCart((prev) =>
+      updateCart((prev) =>
         prev.map((item) => item.id === data.id ? data : item)
       );
     } else {
@@ -67,34 +80,84 @@ export const CartProvider = ({ children }) => {
         quantity: 1,
       });
 
-      setCart((prev) => [...prev, data]);
+      updateCart((prev) => [...prev, data]);
     }
   };
 
   const updateQuantity = async (id, quantity) => {
-    const item = cart.find((product) => product.id === id);
+    const item = cartRef.current.find((product) => product.id === id);
 
     if (!item || quantity < 1 || quantity > item.stock) return;
 
-    const { data } = await api.patch(`/cart/${id}`, { quantity });
-
-    setCart((prev) =>
-      prev.map((product) => product.id === id ? data : product)
+    pendingQuantityRef.current.set(id, quantity);
+    updateCart((prev) =>
+      prev.map((product) =>
+        product.id === id ? { ...product, quantity } : product
+      )
     );
+
+    if (quantityQueueRef.current.has(id)) {
+      return quantityQueueRef.current.get(id);
+    }
+
+    const queue = (async () => {
+      try {
+        while (pendingQuantityRef.current.has(id)) {
+          const nextQuantity = pendingQuantityRef.current.get(id);
+          pendingQuantityRef.current.delete(id);
+
+          try {
+            const { data } = await api.patch(`/cart/${id}`, {
+              quantity: nextQuantity,
+            });
+
+            updateCart((prev) =>
+              prev.map((product) =>
+                product.id === id ? data : product
+              )
+            );
+          } catch (error) {
+            if (error.response?.status === 404) {
+              pendingQuantityRef.current.delete(id);
+              await fetchCart();
+              return;
+            }
+            pendingQuantityRef.current.delete(id);
+            await fetchCart();
+            throw error;
+          }
+        }
+      } finally {
+        quantityQueueRef.current.delete(id);
+      }
+    })();
+
+    quantityQueueRef.current.set(id, queue);
+    return queue;
   };
 
   const removeFromCart = async (id) => {
-    await api.delete(`/cart/${id}`);
+    try {
+      await api.delete(`/cart/${id}`);
+    } catch (error) {
+      if (error.response?.status !== 404) throw error;
+    }
 
-    setCart((prev) => prev.filter((item) => item.id !== id));
+    updateCart((prev) => prev.filter((item) => item.id !== id));
   };
 
   const clearCart = async () => {
     await Promise.all(
-      cart.map((item) => api.delete(`/cart/${item.id}`))
+      cartRef.current.map(async (item) => {
+        try {
+          await api.delete(`/cart/${item.id}`);
+        } catch (error) {
+          if (error.response?.status !== 404) throw error;
+        }
+      })
     );
 
-    setCart([]);
+    updateCart([]);
   };
 
   const getPrice = (item) =>
