@@ -215,11 +215,11 @@ Password: admin123
 
 ## 🚀 Deployment
 
-Frontend is deployed using **Vercel**.
+The frontend and API functions are deployed using **Vercel**. Product and category data are served from `db.json`; check `/api/products` and `/api/categories` to verify the deployed API.
 
 **Live Project:** YOUR_VERCEL_DEPLOYMENT_URL
 
-> **Important:** JSON Server running locally is not automatically deployed with your React frontend. For a fully working live website, configure a publicly hosted backend/API and set the correct production API URL.
+> **Important:** Vercel serverless functions do not persist changes to `db.json`. Use a persistent database and hosted backend before relying on live admin edits, orders, carts, or user changes.
 
 ## 🎯 Project Purpose
 
