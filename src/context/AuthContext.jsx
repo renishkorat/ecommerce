@@ -108,6 +108,10 @@ export const AuthProvider = ({ children }) => {
         params: { email },
       });
 
+      if (!Array.isArray(data)) {
+        throw new Error("User service is unavailable");
+      }
+
       const foundUser = data.find(
         (item) =>
           item.password === password &&
@@ -135,6 +139,10 @@ export const AuthProvider = ({ children }) => {
       const { data } = await api.get("/users", {
         params: { email },
       });
+
+      if (!Array.isArray(data)) {
+        throw new Error("Admin service is unavailable");
+      }
 
       const foundAdmin = data.find(
         (item) =>
