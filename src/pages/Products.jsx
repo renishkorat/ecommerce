@@ -33,6 +33,10 @@ export default function Products() {
         ]);
 
         const productData = productRes.data;
+        if (!Array.isArray(productData) || !Array.isArray(categoryRes.data)) {
+          throw new Error("The API returned invalid product or category data");
+        }
+
         setProducts(productData);
         setCategories(categoryRes.data);
 

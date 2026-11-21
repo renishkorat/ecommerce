@@ -9,8 +9,16 @@ export default function Categories() {
 
   useEffect(() => {
     api.get("/categories")
-      .then((res) => setCategories(res.data))
-      .catch(() => alert("Categories loading failed"))
+      .then((res) => {
+        if (!Array.isArray(res.data)) {
+          throw new Error("The API returned invalid category data");
+        }
+        setCategories(res.data);
+      })
+      .catch((error) => {
+        console.error("Categories loading error:", error);
+        alert("Categories loading failed");
+      })
       .finally(() => setLoading(false));
   }, []);
 

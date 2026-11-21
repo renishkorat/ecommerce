@@ -27,6 +27,10 @@ export default function Home() {
           api.get("/categories"),
         ]);
 
+        if (!Array.isArray(productRes.data) || !Array.isArray(categoryRes.data)) {
+          throw new Error("The API returned invalid product or category data");
+        }
+
         setProducts(productRes.data);
         setCategories(categoryRes.data);
       } catch (error) {
