@@ -2,6 +2,30 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/api/products/:id",
+      "destination": "/api/products?id=:id"
+    },
+    {
+      "source": "/api/categories/:id",
+      "destination": "/api/categories?id=:id"
+    },
+    {
+      "source": "/api/users/:id",
+      "destination": "/api/users?id=:id"
+    },
+    {
+      "source": "/api/cart/:id",
+      "destination": "/api/cart?id=:id"
+    },
+    {
+      "source": "/api/wishlist/:id",
+      "destination": "/api/wishlist?id=:id"
+    },
+    {
+      "source": "/api/orders/:id",
+      "destination": "/api/orders?id=:id"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
