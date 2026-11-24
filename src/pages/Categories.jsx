@@ -8,19 +8,30 @@ export default function Categories() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/categories")
-      .then((res) => {
-        if (!Array.isArray(res.data)) {
-          throw new Error("The API returned invalid category data");
-        }
-        setCategories(res.data);
-      })
-      .catch((error) => {
-        console.error("Categories loading error:", error);
-        alert("Categories loading failed");
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  const fetchCategories = async () => {
+    try {
+      const res = await api.get("/categories");
+
+      if (!Array.isArray(res.data)) {
+        throw new Error("The API returned invalid category data");
+      }
+
+      setCategories(res.data);
+    } catch (error) {
+      console.error("Categories loading error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCategories();
+
+  const interval = setInterval(() => {
+    fetchCategories();
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
 
   if (loading) return <Loader />;
 

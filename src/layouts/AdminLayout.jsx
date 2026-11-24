@@ -1,9 +1,11 @@
 
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+
 import {
   FiGrid,
   FiPackage,
+  FiTag,
   FiShoppingBag,
   FiUsers,
   FiLogOut,
@@ -16,13 +18,13 @@ export default function AdminLayout() {
   const links = [
     [FiGrid, "Dashboard", "/admin"],
     [FiPackage, "Products", "/admin/products"],
+    [FiTag, "Deals", "/admin/deals"],
     [FiShoppingBag, "Orders", "/admin/orders"],
     [FiUsers, "Users", "/admin/users"],
   ];
 
   return (
     <div className="min-h-screen bg-slate-100">
-
       <header className="bg-slate-950 text-white p-5 flex justify-between items-center">
         <h1 className="text-xl font-bold">
           ShopEase Admin
@@ -41,7 +43,6 @@ export default function AdminLayout() {
       </header>
 
       <div className="flex flex-col md:flex-row">
-
         <aside className="bg-white md:w-64 md:min-h-[calc(100vh-68px)] p-4">
           <nav className="flex md:flex-col gap-2 overflow-x-auto">
             {links.map(([Icon, title, path]) => (
@@ -60,7 +61,6 @@ export default function AdminLayout() {
         <main className="flex-1 p-4 md:p-8 min-w-0">
           <Outlet />
         </main>
-
       </div>
     </div>
   );

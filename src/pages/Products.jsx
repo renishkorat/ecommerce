@@ -58,6 +58,13 @@ export default function Products() {
     };
 
     fetchProducts();
+
+  //   const interval = setInterval(() => {
+  //   fetchProducts();
+  // }, 5000);
+
+  // return () => clearInterval(interval);
+  
   }, []);
 
   // Update search and category from URL

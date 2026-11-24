@@ -1,12 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import {
-  FiArrowRight,
-  FiTruck,
-  FiShield,
-  FiHeadphones,
-} from "react-icons/fi";
+import {FiArrowRight,FiTruck,FiShield,FiHeadphones,} from "react-icons/fi";
 import api from "../services/api";
 import ProductCard from "../components/ProductCard";
 import Loader from "../components/Loader";
@@ -41,6 +36,11 @@ export default function Home() {
     };
 
     loadData();
+     const interval = setInterval(() => {
+    loadData();
+  }, 5000);
+
+  return () => clearInterval(interval);
   }, []);
 
   const filteredProducts = products.filter((product) => {
@@ -188,7 +188,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container-custom py-10">
+      {/* <section className="container-custom py-10">
         <div className="flex justify-between items-center mb-7">
           <h2 className="text-2xl md:text-3xl font-bold">
             Featured Products
@@ -207,7 +207,7 @@ export default function Home() {
             ))}
           </div>
         )}
-      </section>
+      </section> */}
 
       <section className="container-custom py-8">
         <div className="bg-orange-100 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-5">

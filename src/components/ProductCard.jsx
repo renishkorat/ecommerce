@@ -1,5 +1,5 @@
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   FiHeart,
   FiShoppingCart,
@@ -20,7 +20,6 @@ export default function ProductCard({ product }) {
     updateQuantity,
     removeFromCart,
   } = useCart();
-  
 
   const {
     addToWishlist,
@@ -31,6 +30,13 @@ export default function ProductCard({ product }) {
 
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Pass deal status only when product is opened from Deals page
+  const productLinkState = {
+    fromDeals: location.pathname === "/deals",
+    isUpcoming: Boolean(product.isUpcoming),
+  };
 
   const discountPrice = Math.round(
     product.price * (1 - product.discount / 100)
@@ -117,7 +123,10 @@ export default function ProductCard({ product }) {
 
       {/* Product Image */}
       <div className="relative bg-slate-100 h-52 overflow-hidden">
-        <Link to={`/product/${product.id}`}>
+        <Link
+          to={`/product/${product.id}`}
+          state={productLinkState}
+        >
           <img
             src={product.image}
             alt={product.title}
@@ -152,7 +161,10 @@ export default function ProductCard({ product }) {
           {product.category}
         </p>
 
-        <Link to={`/product/${product.id}`}>
+        <Link
+          to={`/product/${product.id}`}
+          state={productLinkState}
+        >
           <h3 className="font-semibold text-slate-800 line-clamp-2 min-h-12 hover:text-blue-600">
             {product.title}
           </h3>
@@ -179,8 +191,16 @@ export default function ProductCard({ product }) {
           )}
         </div>
 
-        {/* Quantity Controls */}
-        {quantity > 0 ? (
+        {/* Upcoming Deal Status */}
+        {product.isUpcoming ? (
+          <button
+            type="button"
+            disabled
+            className="w-full bg-orange-100 text-orange-700 py-2.5 rounded-lg text-sm font-semibold cursor-not-allowed"
+          >
+            Coming Soon
+          </button>
+        ) : quantity > 0 ? (
           <div className="grid grid-cols-2 gap-2">
 
             {/* Quantity Controls */}
@@ -218,7 +238,6 @@ export default function ProductCard({ product }) {
               <FiZap size={16} />
               Buy Now
             </button>
-            
 
           </div>
         ) : (
@@ -247,6 +266,7 @@ export default function ProductCard({ product }) {
 
           </div>
         )}
+
         {product.stock <= 0 && (
           <p className="text-center text-red-500 text-xs mt-2">
             Out of Stock

@@ -8,18 +8,11 @@
       "role": "admin"
     },
     {
-  "id": "2",
-  "name": "Demo User",
-  "email": "user@gmail.com",
-  "password": "user123",
-  "role": "user"
-},
-    {
-      "name": "Renish Korat",
-      "email": "renish12@gmail.com",
-      "password": "123456789",
-      "role": "user",
-      "id": "rRdvqxD"
+      "id": "2",
+      "name": "Demo User",
+      "email": "user@gmail.com",
+      "password": "user123",
+      "role": "user"
     }
   ],
   "categories": [
@@ -271,31 +264,37 @@
       "id": "k2V4f1d"
     }
   ],
-  "cart": [],
-  "wishlist": [],
-  "orders": [
+  "cart": [
     {
-      "userId": "rRdvqxD",
-      "customerName": "Renish Korat",
-      "phone": "7984048969",
-      "address": "sanali,amreli",
-      "city": "sanali",
-      "pincode": "365450",
-      "payment": "COD",
-      "items": [
-        {
-          "productId": "3",
-          "title": "Premium Running Shoes",
-          "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700",
-          "price": 2499,
-          "discount": 30,
-          "quantity": 2
-        }
-      ],
-      "total": 3498.6,
-      "status": "Shipped",
-      "createdAt": "2026-11-17T12:22:35.429Z",
+      "userId": "2",
+      "productId": "13",
+      "title": "Kitchen Cookware Set",
+      "image": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=700",
+      "price": 2999,
+      "discount": 20,
+      "stock": 12,
+      "quantity": 1,
       "id": 1
+    }
+  ],
+  "wishlist": [],
+  "orders": [],
+  "deals": [
+    {
+      "productId": "1",
+      "discount": 80,
+      "startDate": "2026-11-25",
+      "endDate": "2027-01-01",
+      "active": true,
+      "id": 1
+    },
+    {
+      "productId": "k2V4f1d",
+      "discount": 60,
+      "startDate": "2026-11-25",
+      "endDate": "2026-12-11",
+      "active": true,
+      "id": 2
     }
   ]
 }

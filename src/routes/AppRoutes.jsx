@@ -9,6 +9,7 @@ import Home from "../pages/Home";
 import Products from "../pages/Products";
 import ProductDetails from "../pages/ProductDetails";
 import Categories from "../pages/Categories";
+import Deals from "../pages/Deals";
 import Cart from "../pages/Cart";
 import Wishlist from "../pages/Wishlist";
 import Login from "../pages/Login";
@@ -21,6 +22,7 @@ import NotFound from "../pages/NotFound";
 import AdminLogin from "../pages/admin/AdminLogin";
 import Dashboard from "../pages/admin/Dashboard";
 import ManageProducts from "../pages/admin/ManageProducts";
+import ManageDeals from "../pages/admin/ManageDeals";
 import ManageOrders from "../pages/admin/ManageOrders";
 import ManageUsers from "../pages/admin/ManageUsers";
 
@@ -40,6 +42,7 @@ export default function AppRoutes() {
         <Route path="/products" element={<Products />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/categories" element={<Categories />} />
+        <Route path="/deals" element={<Deals />} />
 
         {/* Protected User Routes */}
         <Route element={<ProtectedRoute />}>
@@ -58,6 +61,7 @@ export default function AppRoutes() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="products" element={<ManageProducts />} />
+          <Route path="deals" element={<ManageDeals />} />
           <Route path="orders" element={<ManageOrders />} />
           <Route path="users" element={<ManageUsers />} />
         </Route>
