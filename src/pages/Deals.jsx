@@ -21,10 +21,15 @@ export default function Deals() {
                     api.get("/products"),
                 ]);
 
+                if (!Array.isArray(dealRes.data) || !Array.isArray(productRes.data)) {
+                    throw new Error("The API returned invalid deal or product data");
+                }
+
                 setDeals(dealRes.data);
                 setProducts(productRes.data);
                 setError("");
             } catch (err) {
+                console.error("Unable to load deals:", err);
                 setError("Unable to load deals. Please try again.");
             } finally {
                 setLoading(false);

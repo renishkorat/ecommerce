@@ -26,6 +26,10 @@
       "destination": "/api/orders?id=:id"
     },
     {
+      "source": "/api/deals/:id",
+      "destination": "/api/deals?id=:id"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
