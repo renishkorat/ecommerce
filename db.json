@@ -264,19 +264,7 @@
       "id": "k2V4f1d"
     }
   ],
-  "cart": [
-    {
-      "userId": "2",
-      "productId": "13",
-      "title": "Kitchen Cookware Set",
-      "image": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=700",
-      "price": 2999,
-      "discount": 20,
-      "stock": 12,
-      "quantity": 1,
-      "id": 1
-    }
-  ],
+  "cart": [],
   "wishlist": [],
   "orders": [],
   "deals": [

@@ -126,7 +126,8 @@ export default function Profile() {
             </label>
 
             <input
-              required
+              // required
+              disabled
               type="email"
               className="input-field"
               value={email}
@@ -141,7 +142,7 @@ export default function Profile() {
 
             <input
               disabled
-              className="input-field bg-slate-100"
+              className="input-field"
               value={user?.role || ""}
             />
           </div>
